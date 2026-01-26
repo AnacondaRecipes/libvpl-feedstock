@@ -1,50 +1,49 @@
-context:
-  name: libvpl
-  version: "2.15.0"
+{% set name = "libvpl" %}
+{% set version = "2.15.0" %} 
 
 package:
-  name: ${{ name|lower }}
-  version: ${{ version }}
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-  url: https://github.com/intel/libvpl/archive/refs/tags/v${{ version }}.zip
+  url: https://github.com/intel/{{ name }}/archive/refs/tags/v{{ version }}.zip
   sha256: 719e9b42f31b8c4cc4bc6ef98995c12c6ace400ed5a0dfb7b35a096451b1cc3c
 
 build:
-  skip:
-    - win
-    - osx
-  number: 1
+  number: 0
+  skip: true  # [not (linux and x86_64)]
+  run_exports:
+    - {{ pin_subpackage('libvpl', max_pin='x.x') }}
 
 requirements:
   build:
-    - ${{ compiler('c') }}
-    - ${{ compiler('cxx') }}
-    - ${{ stdlib('c') }}
+    - {{ stdlib('c') }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - cmake
     - make
   host:
     - libva
     - intel-media-driver
-  run_exports:
-    - ${{ pin_subpackage('libvpl', upper_bound='x.x') }}
 
-tests:
-  - script:
+test:
+  commands:
     - test -f ${PREFIX}/lib/libvpl.so
     - test -f ${PREFIX}/include/vpl/mfx.h
 
 about:
-  homepage: https://github.com/intel/media-driver
+  home: https://github.com/intel/media-driver
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
   summary: 'Intel® Video Processing Library (Intel® VPL)'
   description: |
     Intel® Video Processing Library (Intel® VPL) provides access to hardware
     accelerated video decode, encode, and processing capabilities on Intel®
     GPUs to support AI visual inference, media delivery, cloud gaming, and
     virtual desktop infrastructure use cases.
-
-  license: MIT
-  license_file: LICENSE
+  dev_url: https://github.com/intel/media-driver
+  doc_url: https://github.com/intel/media-driver
 
 extra:
   recipe-maintainers:
