@@ -1,19 +1,19 @@
 {% set name = "libvpl" %}
-{% set version = "2.15.0" %} 
+{% set version = "2.16.0" %} 
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/intel/{{ name }}/archive/refs/tags/v{{ version }}.zip
-  sha256: 719e9b42f31b8c4cc4bc6ef98995c12c6ace400ed5a0dfb7b35a096451b1cc3c
+  url: https://github.com/intel/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: d60931937426130ddad9f1975c010543f0da99e67edb1c6070656b7947f633b6
 
 build:
   number: 0
-  skip: true  # [not (linux and x86_64)]
   run_exports:
     - {{ pin_subpackage('libvpl', max_pin='x.x') }}
+  skip: true  # [not (linux and x86_64)]
 
 requirements:
   build:
